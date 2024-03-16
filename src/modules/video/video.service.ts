@@ -11,8 +11,8 @@ export class VideoService {
   constructor(@InjectModel(Video.name) private videoModel: Model<Video>) {}
 
   async create(videoDto: CreateVideoDto): Promise<VideoDocument> {
-    const createdCat = new this.videoModel(videoDto);
-    return createdCat.save();
+    const createdVideo = new this.videoModel(videoDto);
+    return createdVideo.save();
   }
 
   async setAlive(id: string, isAlive: boolean): Promise<Video> {

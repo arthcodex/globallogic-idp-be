@@ -1,5 +1,5 @@
 import { Readable } from 'stream';
-import { ProcessVideoParams } from './types';
+import { ProcessVideoParams, VideoData } from './types';
 
 import * as ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
 import * as ffmpeg from 'fluent-ffmpeg';
@@ -33,14 +33,17 @@ export const segmentVideo = async ({
   });
 };
 
-export const getVideoDuration = async (
+export const getVideoData = async (
   video: Express.Multer.File,
-): Promise<number> => {
+): Promise<VideoData> => {
   return new Promise((resolve) => {
     const stream: Readable = Readable.from(video.buffer);
     const command = ffmpeg(stream);
     command.ffprobe((_, metadata): void => {
-      resolve(Math.floor(metadata?.format?.duration ?? 0));
+      resolve({
+        duration: Math.floor(metadata?.format?.duration ?? 0),
+        filename: metadata?.format?.filename,
+      });
     });
   });
 };

@@ -16,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { VideoValidationPipe } from './pipes/video-validation.pipe';
 import {
   generateVideoPreview,
-  getVideoDuration,
+  getVideoData,
   segmentVideo,
 } from '../../util/ffmpeg';
 import { PaginatedResponse } from '../../types/pagination';
@@ -29,12 +29,11 @@ export class VideoController {
   @UseInterceptors(FileInterceptor('video'))
   @HttpCode(201)
   async create(@UploadedFile(VideoValidationPipe) video: Express.Multer.File) {
-    const date: Date = new Date();
-    const duration: number = await getVideoDuration(video);
+    const { duration, filename } = await getVideoData(video);
 
     /* Create video instance in DB */
     const created = await this.videoService.create({
-      name: `Video from ${date.toISOString()}`,
+      name: filename,
       duration,
       alive: false,
     });
