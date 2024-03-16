@@ -42,7 +42,7 @@ export const getVideoData = async (
     command.ffprobe((_, metadata): void => {
       resolve({
         duration: Math.floor(metadata?.format?.duration ?? 0),
-        filename: metadata?.format?.filename,
+        filename: `Video ${Date.now()}`,
       });
     });
   });

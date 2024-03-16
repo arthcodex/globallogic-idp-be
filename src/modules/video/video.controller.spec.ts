@@ -4,7 +4,7 @@ import { VideoService } from './video.service';
 import { VideoDocument } from './schemas/video.schema';
 import * as ffmpeg from '../../util/ffmpeg';
 
-describe('Video Controller', () => {
+describe('VideoController', () => {
   let controller: VideoController;
   let service: VideoService;
 
@@ -13,6 +13,7 @@ describe('Video Controller', () => {
     duration: 100,
     alive: false,
     _id: 'sample_id',
+    id: 'sample_id',
   };
 
   const mockVideosList = [
@@ -70,10 +71,14 @@ describe('Video Controller', () => {
 
       const createSpy = jest
         .spyOn(service, 'create')
-        .mockResolvedValueOnce(mockVideo as unknown as VideoDocument);
+        .mockResolvedValue(mockVideo as unknown as VideoDocument);
 
       const result = await controller.create({} as Express.Multer.File);
-      expect(createSpy).toHaveBeenCalledWith(mockVideo);
+      expect(createSpy).toHaveBeenCalledWith({
+        name: mockVideo.name,
+        duration: mockVideo.duration,
+        alive: mockVideo.alive,
+      });
       expect(result).toEqual({ _id: mockVideo._id });
     });
   });
