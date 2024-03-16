@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Video, VideoDocument } from './schemas/video.schema';
 import { CreateVideoDto } from './dto/create-video.dto';
 import { PAGINATION_LIMIT } from './constants';
-import { PaginatedResponse } from '../../common/types/pagination';
+import { PaginatedResponse } from '../../types/pagination';
 
 @Injectable()
 export class VideoService {

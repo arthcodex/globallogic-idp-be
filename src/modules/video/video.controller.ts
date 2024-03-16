@@ -21,7 +21,7 @@ import {
   segmentVideo,
 } from '../../util/ffmpeg';
 import { Request } from 'express';
-import { PaginatedResponse } from '../../common/types/pagination';
+import { PaginatedResponse } from '../../types/pagination';
 
 @Controller('videos')
 export class VideoController {
