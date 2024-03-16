@@ -29,7 +29,7 @@ export class VideoService {
     const data = await this.videoModel
       .find({ alive: true })
       .limit(PAGINATION_LIMIT)
-      .skip(page)
+      .skip(page * PAGINATION_LIMIT)
       .exec();
     return { data, totalPages, page };
   }

@@ -7,7 +7,6 @@ import {
   Param,
   Post,
   Query,
-  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -20,7 +19,6 @@ import {
   getVideoDuration,
   segmentVideo,
 } from '../../util/ffmpeg';
-import { Request } from 'express';
 import { PaginatedResponse } from '../../types/pagination';
 
 @Controller('videos')
@@ -29,11 +27,8 @@ export class VideoController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('video'))
-  @HttpCode(204)
-  async create(
-    @Req() request: Request,
-    @UploadedFile(VideoValidationPipe) video: Express.Multer.File,
-  ) {
+  @HttpCode(201)
+  async create(@UploadedFile(VideoValidationPipe) video: Express.Multer.File) {
     const date: Date = new Date();
     const duration: number = await getVideoDuration(video);
 
@@ -63,6 +58,8 @@ export class VideoController {
     }
 
     await this.videoService.setAlive(created.id, true);
+
+    return { _id: created.id };
   }
 
   @Get()
